@@ -1,0 +1,32 @@
+name: Publish Python Az Function Container
+on:
+    workflow_dispatch:
+
+env:
+    # Variables needed to build and push the image
+    IMAGE_NAME: azure-functions-docker-python-sample-v1
+    DOCKERFILE_PATH: '.'
+# A workflow run is made up of one or more jobs, which run in parallel by default
+jobs:
+    # name of job
+  publish-docker-image:
+    # define the type of machine to run the job on
+    runs-on: [ atc-ubuntu-latest ]
+    # Changing sub-folder for build. 
+    defaults:
+      run:
+        working-directory: './azure-functions-docker-python-sample'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: log in to the container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Build Inventory Image'
+        run: |
+              docker build . --tag ghcr.io/shekhawatajit/az.py.function:latest
+              docker push ghcr.io/shekhawatajit/az.py.function:latest
