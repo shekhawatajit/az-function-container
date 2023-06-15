@@ -11,7 +11,7 @@ jobs:
     # name of job
   publish-docker-image:
     # define the type of machine to run the job on
-    runs-on: [ atc-ubuntu-latest ]
+    runs-on: [ ubuntu-latest ]
     # Changing sub-folder for build. 
     defaults:
       run:
